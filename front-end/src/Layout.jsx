@@ -5,7 +5,7 @@ export default function Layout() {
   return (
     <>
     <NavBar />
-    <Outlet /> {/* represent warever page is baing displayed*/}
+    <Outlet /> {/*represent whatever page is being displayed*/}
     </>
   );
 }

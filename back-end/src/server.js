@@ -49,13 +49,11 @@ app.use(async function(req, res, next) {
     } else {
         res.sendStatus(400);
     }
-}); 
+});
 
 app.post('/api/articles/:name/upvote', async (req, res) => {
     const { name } = req.params;
     const { uid } = req.user;
-
-    upvoteIds: [123, 22, 33]
 
     const article = await db.collection('articles').findOne({name});
 
@@ -98,7 +96,6 @@ async function start() {
 }
 
 start();
-
 
 
 /* Examples of use */

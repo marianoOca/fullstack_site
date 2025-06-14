@@ -11,17 +11,25 @@ export default function ArticlePage() {
     const { upvotes: initialUpvotes, comments: initialComments } = useLoaderData();
     const [upvotes, setUpvotes] = useState(initialUpvotes);
     const [comments, setComments] = useState(initialComments);
+    const [upvoteMessage, setUpvoteMessage] = useState('');
 
     const {isLoading, user} = useUser();
 
     const article = articles.find(a => a.name === name);
 
     async function onUpvoteClicked() {
-        const token = user && await user.getIdToken();
-        const headers = token ? {authtoken: token} : {};
-        const response = await axios.post('/api/articles/' + name + '/upvote', null, { headers });
-        const updatedArticleData = response.data;
-        setUpvotes(updatedArticleData.upvotes);
+        try {
+            const token = user && await user.getIdToken();
+            const headers = token ? {authtoken: token} : {};
+            const response = await axios.post('/api/articles/' + name + '/upvote', null, { headers });
+            const updatedArticleData = response.data;
+            setUpvotes(updatedArticleData.upvotes);
+            setUpvoteMessage('');
+        } catch (e) {
+            if (e.response?.status === 403) {
+                setUpvoteMessage('You have already upvoted this article!');
+            }
+        }
     }
 
     async function onAddComment({ nameText, commentText }) {
@@ -38,7 +46,11 @@ export default function ArticlePage() {
     return (
         <>
         <h1>{article.title}</h1>
-        {user && <button onClick={onUpvoteClicked}>Upvote</button>}
+        {user &&
+            <>
+            <button onClick={onUpvoteClicked}>Upvote</button>
+            {upvoteMessage && <span style={{ marginLeft: '1em'}}>{upvoteMessage}</span>}
+            </>}
         <p>This article has {upvotes} upvotes</p>
         {article.content.map(p => <p key={p}>{p}</p>)}
         {user 

@@ -1,5 +1,5 @@
 Requierements
-MongoDB 7.0
+MongoDB 7.0.21
 
 If you don't have Node.js instaled (like myself), you'll have to run:
 

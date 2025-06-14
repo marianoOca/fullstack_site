@@ -1,3 +1,6 @@
+Requierements
+MongoDB 7.0
+
 If you don't have Node.js instaled (like myself), you'll have to run:
 
 Install nvm, run in bash:

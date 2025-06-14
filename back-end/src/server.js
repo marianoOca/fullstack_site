@@ -1,5 +1,5 @@
 import express from 'express';
-import { MongoClient, ReturnDocument, ServerApiVersion } from 'mongodb';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 
 const articleInfo = [
     { name: 'learn-node', upvotes: 0, comments: [] },
@@ -47,18 +47,18 @@ app.post('/api/articles/:name/upvote', async (req, res) => {
     res.json(updatedArticle);
 });
 
-app.post('/api/articles/:name/comments', (req, res) => {
+app.post('/api/articles/:name/comments', async (req, res) => {
     const { name } = req.params;
     const { postedBy, text } = req.body;
+    const newComment = { postedBy, text };
 
-    const article = articleInfo.find(a => a.name === name);
+    const updatedArticle = await db.collection('articles').findOneAndUpdate({ name }, {
+        $push: { comments: newComment }
+    }, {
+        returnDocument: "after",
+    })
 
-    article.comments.push({
-        postedBy,
-        text,
-    });
-
-    res.json(article);
+    res.json(updatedArticle);
 });
 
 async function start() {

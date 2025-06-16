@@ -29,6 +29,7 @@ A project-based full-stack web application that allows users to upvote and comme
 
 <details>
   <summary>If this is your first time doing this on Windows</summary>
+
 You'll be delighted to, after download those:
 ```bash
 nano ~/.bashrc
